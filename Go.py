@@ -337,7 +337,7 @@ def print_board(board, empty=' '):
 if __name__ == "__main__":
     # Initialize
     player = 'b'
-    b_size = 19
+    b_size = 9
     g = Game(b_size)
 
     # Test Moves
@@ -346,7 +346,7 @@ if __name__ == "__main__":
     g.play((0, 1), 'w')
     g.play((1, 2), 'w')
     g.play((2, 1), 'w')
-    # g.play((1, 0), 'w')  # Uncomment this to perform the capture
+    # g.play((1, 0), 'w')  # Uncomment this and run again to see a capture
 
     # Print Board
     print(print_board(g.board, "."))
