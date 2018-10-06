@@ -8,6 +8,13 @@ from math import floor
 
 class Game:
     def __init__(self, board_size=19, rules=None):
+        """
+
+        The Game class is for playing go. There is only one method for now, "play".
+
+        :param board_size: int
+        :param rules: {'suicide': False, 'komi': 6.5, 'superko': True, 'editmode': False}
+        """
         self.board_size = board_size
         self.board = board_generate_empty(board_size)
         self.board_history = [deepcopy(self.board)]
@@ -16,6 +23,15 @@ class Game:
         self.turn = "b"
 
     def play(self, xy, color):
+        """
+
+        Place a stone at xy of the given color.
+        All associated actions that normally take place when playing a stone are taken care of.
+
+        :param xy: (int,int)
+        :param color: 'b' or 'w'
+        :return: N/A
+        """
         validity = xy_is_valid(xy, color, self.board, self.rules, self.board_history)
         if validity["status"] == "valid":
             self.board = xy_play_on_board(xy, self.board, color)
@@ -27,7 +43,9 @@ class Game:
 
 def xy_is_valid(xy, color, board, rules, board_history):
     """
-    Determines if a play at xy is valid for a given color, board, rules, and board_history
+
+    Determines if a play at xy is valid for a given color, board, rules, and board_history.
+
     :param xy: tuple (x, y)
     :param color: 'w' or 'b'
     :param board: 2d list
@@ -70,7 +88,9 @@ def xy_is_valid(xy, color, board, rules, board_history):
 
 def xy_off_board(xy, board):
     """
-    return True if xy is off the board
+
+    Return True if xy is off the board.
+
     :param xy: (int, int)
     :param board: 2d list
     :return: bool
@@ -80,7 +100,9 @@ def xy_off_board(xy, board):
 
 def xy_occupied(xy, board):
     """
-    returns True if xy is already occupied on the given board
+
+    Returns True if xy is already occupied on the given board.
+
     :param xy: (int, int)
     :param board: 2d list
     :return: bool
@@ -90,7 +112,9 @@ def xy_occupied(xy, board):
 
 def xy_play_on_board(xy, board, color):
     """
-    returns board after stone is played at xy
+
+    Returns board after stone is played at xy.
+
     :param xy: (int, int)
     :param board: 2d list
     :param color: 'b' or 'w'
@@ -109,7 +133,9 @@ def xy_play_on_board(xy, board, color):
 
 def xy_to_group(xy, board):
     """
-    returns a group which the stone at xy is a member of
+
+    Returns the group of which the stone at xy is a member.
+
     :param xy: (int, int)
     :param board: 2d list
     :return: group {(int,int), (int,int), ...}
@@ -128,11 +154,11 @@ def xy_to_group(xy, board):
 def xy_adjacents(xy, board=None, filter_by=None, color=None):
     """
 
-    returns locations neighboring xy
-    if color is given, it is preferred, otherwise it is inferred from the board
-    if filter_by == "friend" then friendly adjacents are returned
-    if filter_by == "foe" then opponents adjacents are returned
-    if filter_by == "None" then open liberties are returned
+    Returns locations neighboring xy.
+    if color is given, it is preferred, otherwise it is inferred from the board.
+    if filter_by == "friend" then friendly adjacents are returned.
+    if filter_by == "foe" then opponents adjacents are returned.
+    if filter_by == "None" then open liberties are returned.
 
     :param xy: (int, int)
     :param board: 2d list
@@ -154,7 +180,9 @@ def xy_adjacents(xy, board=None, filter_by=None, color=None):
 
 def xy_suicide(xy, board, color):
     """
-    return True if xy is a suicide move
+
+    Return True if xy is a suicide move.
+
     :param xy: (int, int)
     :param board: 2d list
     :param color: 'b' or 'w'
@@ -170,7 +198,9 @@ def xy_suicide(xy, board, color):
 
 def xy_to_captures(xy, color, board):
     """
-    returns the number of captures the move at xy produces
+
+    Returns the number of captures the move at xy produces.
+
     :param xy: (int, int)
     :param color: 'b' or 'w'
     :param board: 2d list
@@ -187,10 +217,11 @@ def xy_to_captures(xy, color, board):
 
 def group_adjacents(group, board, filter_by=None):
     """
-    returns what the adjacent locations are for a group
-      if filter_by == "None" then returns open liberties
-      if filter_by == "friend" then returns friendly neighbors
-      if filter_by == "foe" then returns opponents neighbors
+
+    Returns what the adjacent locations are for a group.
+      if filter_by == "None" then returns open liberties.
+      if filter_by == "friend" then returns friendly neighbors.
+      if filter_by == "foe" then returns opponents neighbors.
 
     :param group: {(int,int), (int,int), ...}
     :param board: 2d list
@@ -213,7 +244,9 @@ def group_adjacents(group, board, filter_by=None):
 
 def group_is_surrounded(group, board):
     """
-    returns True if a group is surrounded
+
+    Returns True if a group is surrounded.
+
     :param group: {(int,int), (int,int), ...}
     :param board: 2d list
     :return: bool
@@ -226,7 +259,9 @@ def group_is_surrounded(group, board):
 
 def group_remove(group, board):
     """
-    removes group from board
+
+    Removes the group from the board and returns the new board.
+
     :param group: {(int,int), (int,int), ...}
     :param board: 2d list
     :return: 2d list
@@ -238,8 +273,10 @@ def group_remove(group, board):
 
 def rule_superko(board, board_history):
     """
-    returns True is board position is not in the history
-            False if it is
+
+    Returns True is board position is not in the history.
+            False if it is.
+
     :param board: 2d list
     :param board_history: 3d list
     :return: bool
@@ -251,6 +288,9 @@ def rule_superko(board, board_history):
 
 def board_generate_empty(size: 'board size'):
     """
+
+    Generates an empty board.
+
     :param size: int
     :return: 2d list
     """
@@ -260,8 +300,10 @@ def board_generate_empty(size: 'board size'):
 
 def switch_color(color):
     """
-    returns 'w' if 'b'
-    returns 'b' if 'w'
+
+    Returns 'w' if 'b'.
+    Returns 'b' if 'w'.
+
     :param color: 'w' or 'b'
     :return: 'w' or 'b'
     """
@@ -270,7 +312,9 @@ def switch_color(color):
 
 def flatten(list_of_lists):
     """
-    turns a 2d list into a 1d list by means of unraveling it
+
+    Turns a 2d list into a 1d list by means of unraveling it.
+
     :param list_of_lists: 2d list
     :return: list
     """
@@ -280,7 +324,9 @@ def flatten(list_of_lists):
 
 def get_int_width(integer):
     """
-    Quite literally tells you the length of an integer (cast as a string)
+
+    Quite literally tells you the length of an integer (cast as a string).
+
     :param integer: int
     :return: int
     """
@@ -289,7 +335,9 @@ def get_int_width(integer):
 
 def print_board(board, empty=' '):
     """
-    generates a 2d ascii image of the board
+
+    Generates a 2d ascii image of the board.
+
     :param board: 2d list
     :param empty: char which will represent how empties are shown
     :return: ascii image of board
