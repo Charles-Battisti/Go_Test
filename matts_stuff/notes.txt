@@ -1,0 +1,51 @@
+
+# Open virtual environment
+%HOMEPATH%\eb-virt\Scripts\activate
+
+# install Django
+(eb-virt)~$ pip install django==2.1.1
+
+# run the server
+cd ebdjango
+python manage.py runserver
+ctrl-c
+
+
+# Elastic Beanstalk setup
+pip freeze > requirements.txt
+mkdir .ebextensions
+touch .ebextensions\django.config
+vim django.config
+paste in:
+  option_settings:
+  aws:elasticbeanstalk:container:python:
+    WSGIPath: ebdjango/wsgi.py
+    
+# close virtualenv
+deactivate
+
+
+# Initialize your EB CLI repository named django-tutorial
+
+eb init -p python-3.6 django-tutorial
+
+# Access Key ID:
+#   AKIAJMBEARQVYBF5EEHA
+# Secret Access Key:
+#   YqM4Aq2X6LjToDZDe171d38e4b2tHzp0EEVqw3Ru
+
+# set up some keys
+eb init
+
+# deploy
+eb create django-env
+
+eb status
+
+vim settings.py 
+  ALLOWED_HOSTS = ['eb-django-app-dev.elasticbeanstalk.com',
+                   'django-env.mnk8qwmk69.us-west-2.elasticbeanstalk.com']
+  
+eb deploy
+
+eb open
